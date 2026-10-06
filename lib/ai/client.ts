@@ -30,7 +30,10 @@ export function ai(): OpenAI {
   if (client) return client;
   const apiKey = process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) throw new Error("OPENAI_API_KEY isn't set in .env.local, so nothing can be explained");
-  client = wrapOpenAI(new OpenAI({ apiKey }), { tracingEnabled: tracingStatus().on });
+  client = wrapOpenAI(
+    new OpenAI({ apiKey, baseURL: process.env.OPENAI_BASE_URL?.trim() || undefined }),
+    { tracingEnabled: tracingStatus().on },
+  );
   return client;
 }
 
